@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Ekstrakurikuler Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-active {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .calendar-day {
+            min-height: 120px;
+        }
+        .event {
+            font-size: 0.75rem;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        /* Simple scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600">Aplikasi Ekstrakurikuler Online</h1>
+            <p class="text-slate-500 mt-2">Manajemen kegiatan siswa menjadi lebih mudah dan terorganisir.</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <div class="mb-8 border-b border-slate-200">
+            <nav class="flex -mb-px space-x-6" id="tabs">
+                <a href="#eskul" class="tab-item tab-active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Daftar Eskul</a>
+                <a href="#pendaftaran" class="tab-item whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300">Pendaftaran</a>
+                <a href="#kalender" class="tab-item whitespace-nowrap py-4 px-1 border-b-2 border-transparent font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300">Kalender Kegiatan</a>
+            </nav>
+        </div>
+
+        <!-- Content Sections -->
+        <main>
+            <!-- Daftar Ekstrakurikuler Section -->
+            <section id="eskul" class="tab-content">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="eskul-list">
+                    <!-- Extracurricular cards will be injected here by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Pendaftaran Section -->
+            <section id="pendaftaran" class="tab-content hidden">
+                <div class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-md">
+                    <h2 class="text-2xl font-bold mb-6 text-center text-slate-700">Formulir Pendaftaran Anggota</h2>
+                    <div id="success-message" class="hidden bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded-md" role="alert">
+                      <p class="font-bold">Pendaftaran Berhasil!</p>
+                      <p>Terima kasih telah mendaftar. Informasi lebih lanjut akan disampaikan oleh pembina eskul.</p>
+                    </div>
+                    <form id="registration-form" class="space-y-6">
+                        <div>
+                            <label for="nama" class="block text-sm font-medium text-slate-600">Nama Lengkap</label>
+                            <input type="text" id="nama" name="nama" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="kelas" class="block text-sm font-medium text-slate-600">Kelas</label>
+                            <input type="text" id="kelas" name="kelas" placeholder="Contoh: X MIPA 1" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label for="eskul-choice" class="block text-sm font-medium text-slate-600">Pilih Ekstrakurikuler</label>
+                            <select id="eskul-choice" name="eskul-choice" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div>
+                            <label for="alasan" class="block text-sm font-medium text-slate-600">Alasan Bergabung</label>
+                            <textarea id="alasan" name="alasan" rows="4" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"></textarea>
+                        </div>
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+                                Daftar Sekarang
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Kalender Kegiatan Section -->
+            <section id="kalender" class="tab-content hidden">
+                 <div class="bg-white p-4 sm:p-6 rounded-xl shadow-md">
+                    <div class="flex items-center justify-between mb-4">
+                        <button id="prev-month" class="px-4 py-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-md transition-colors">&lt;</button>
+                        <h2 id="calendar-title" class="text-xl font-bold text-center text-slate-700"></h2>
+                        <button id="next-month" class="px-4 py-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-md transition-colors">&gt;</button>
+                    </div>
+                    <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-sm">
+                        <!-- Calendar headers and days will be injected here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 text-sm text-slate-400">
+            <p>&copy; 2025 Aplikasi Ekstrakurikuler Online. Dibuat untuk manajemen siswa yang lebih baik.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA ---
+            const extracurriculars = [
+                { id: 'rohis', name: 'Rohis', desc: 'Kegiatan kerohanian Islam untuk membentuk karakter.', color: 'bg-green-500' },
+                { id: 'pramuka', name: 'Pramuka', desc: 'Gerakan kepanduan untuk melatih kemandirian dan kerjasama.', color: 'bg-yellow-900' },
+                { id: 'paskibra', name: 'Paskibra', desc: 'Pasukan pengibar bendera pusaka, melatih disiplin.', color: 'bg-red-600' },
+                { id: 'pmr', name: 'PMR', desc: 'Palang Merah Remaja, belajar pertolongan pertama.', color: 'bg-red-500' },
+                { id: 'volly', name: 'Bola Voli', desc: 'Mengembangkan bakat olahraga bola voli dan kerja tim.', color: 'bg-sky-500' },
+                { id: 'basket', name: 'Basket', desc: 'Mengasah kemampuan bermain bola basket dan strategi.', color: 'bg-orange-500' },
+                { id: 'futsal', name: 'Futsal', desc: 'Kembangkan skill bermain futsal dan kekompakan tim.', color: 'bg-blue-800' },
+                { id: 'handball', name: 'Handball', desc: 'Olahraga tangan yang dinamis dan melatih kecepatan.', color: 'bg-indigo-500' },
+                { id: 'tari', name: 'Seni Tari', desc: 'Mempelajari dan melestarikan seni tari tradisional & modern.', color: 'bg-pink-500' },
+                { id: 'silat', name: 'Pencak Silat', desc: 'Seni bela diri asli Indonesia untuk pertahanan diri.', color: 'bg-gray-700' },
+                { id: 'karate', name: 'Karate', desc: 'Bela diri asal Jepang yang melatih fisik dan mental.', color: 'bg-slate-900' },
+                { id: 'kir', name: 'KIR', desc: 'Kelompok Ilmiah Remaja untuk para pecinta sains & riset.', color: 'bg-purple-600' },
+                { id: 'englishclub', name: 'English Club', desc: 'Meningkatkan kemampuan berbahasa Inggris secara aktif.', color: 'bg-blue-500' },
+                { id: 'niku', name: 'Niku Club', desc: 'Wadah bagi pecinta budaya dan bahasa Jepang.', color: 'bg-rose-400' },
+                { id: 'teater', name: 'Teater', desc: 'Mengasah bakat dalam seni peran dan pertunjukan.', color: 'bg-amber-700' },
+                { id: 'cinematography', name: 'Sinematografi', desc: 'Belajar teknik pembuatan film dari pra-produksi hingga pasca.', color: 'bg-teal-600' },
+                { id: 'paduansuara', name: 'Paduan Suara', desc: 'Mengembangkan harmoni vokal dan teknik bernyanyi.', color: 'bg-yellow-500' }
+            ];
+
+            // --- ELEMENTS ---
+            const tabs = document.querySelectorAll('.tab-item');
+            const contents = document.querySelectorAll('.tab-content');
+            const eskulListContainer = document.getElementById('eskul-list');
+            const eskulChoiceSelect = document.getElementById('eskul-choice');
+            const registrationForm = document.getElementById('registration-form');
+            const successMessage = document.getElementById('success-message');
+
+            // --- FUNCTIONS ---
+            
+            // Function to populate extracurricular list
+            function populateEskulList() {
+                eskulListContainer.innerHTML = '';
+                extracurriculars.forEach(eskul => {
+                    const card = `
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-slate-800">${eskul.name}</h3>
+                                <p class="text-slate-500 text-sm mt-2 h-10">${eskul.desc}</p>
+                                <button data-eskul-id="${eskul.id}" class="register-btn mt-4 w-full text-white ${eskul.color} hover:opacity-90 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-opacity">
+                                    Daftar Sekarang
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    eskulListContainer.innerHTML += card;
+                });
+            }
+
+            // Function to populate dropdown options
+            function populateEskulOptions() {
+                eskulChoiceSelect.innerHTML = '<option value="" disabled selected>-- Pilih salah satu --</option>';
+                extracurriculars.forEach(eskul => {
+                    const option = `<option value="${eskul.id}">${eskul.name}</option>`;
+                    eskulChoiceSelect.innerHTML += option;
+                });
+            }
+            
+            // Function to switch tabs
+            function switchTab(targetId) {
+                tabs.forEach(tab => {
+                    if (tab.getAttribute('href') === targetId) {
+                        tab.classList.add('tab-active');
+                        tab.classList.remove('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300', 'border-transparent');
+                    } else {
+                        tab.classList.remove('tab-active');
+                        tab.classList.add('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300', 'border-transparent');
+                    }
+                });
+
+                contents.forEach(content => {
+                    if ('#' + content.id === targetId) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+            }
+
+
+            // --- CALENDAR LOGIC ---
+            const calendarTitle = document.getElementById('calendar-title');
+            const calendarGrid = document.getElementById('calendar-grid');
+            const prevMonthBtn = document.getElementById('prev-month');
+            const nextMonthBtn = document.getElementById('next-month');
+
+            let currentDate = new Date();
+            currentDate.setDate(1); // Start with the first day of the month
+
+            function generateMonthlyEvents(year, month) {
+                const monthlyEvents = [];
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                const schedule = {
+                    1: [ // Monday
+                        { eskul_id: 'rohis', title: 'Latihan Rutin' },
+                        { eskul_id: 'futsal', title: 'Latihan Rutin' },
+                        { eskul_id: 'handball', title: 'Latihan Rutin' },
+                        { eskul_id: 'pmr', title: 'Latihan Rutin' }
+                    ],
+                    2: [ // Tuesday
+                        { eskul_id: 'paskibra', title: 'Latihan Rutin' },
+                        { eskul_id: 'tari', title: 'Latihan Rutin' },
+                        { eskul_id: 'silat', title: 'Latihan Rutin' },
+                        { eskul_id: 'karate', title: 'Latihan Rutin' }
+                    ],
+                    3: [ // Wednesday
+                        { eskul_id: 'pramuka', title: 'Latihan Rutin' },
+                        { eskul_id: 'volly', title: 'Latihan Rutin' },
+                        { eskul_id: 'kir', title: 'Latihan Rutin' },
+                        { eskul_id: 'teater', title: 'Latihan Rutin' }
+                    ],
+                    4: [ // Thursday
+                        { eskul_id: 'basket', title: 'Latihan Rutin' },
+                        { eskul_id: 'englishclub', title: 'Latihan Rutin' },
+                        { eskul_id: 'niku', title: 'Latihan Rutin' }
+                    ],
+                    5: [ // Friday
+                        { eskul_id: 'paduansuara', title: 'Latihan Rutin' },
+                        { eskul_id: 'cinematography', title: 'Latihan Rutin' }
+                    ]
+                };
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(year, month, day);
+                    const dayOfWeek = date.getDay();
+
+                    if (schedule[dayOfWeek]) {
+                        schedule[dayOfWeek].forEach(event => {
+                            monthlyEvents.push({
+                                date: `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`,
+                                eskul_id: event.eskul_id,
+                                title: event.title
+                            });
+                        });
+                    }
+                }
+                return monthlyEvents;
+            }
+
+            function renderCalendar() {
+                const month = currentDate.getMonth();
+                const year = currentDate.getFullYear();
+                
+                calendarTitle.textContent = `${currentDate.toLocaleString('id-ID', { month: 'long' })} ${year}`;
+                calendarGrid.innerHTML = '';
+                
+                const monthlyEvents = generateMonthlyEvents(year, month);
+
+                // Day headers
+                const daysOfWeek = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+                daysOfWeek.forEach(day => {
+                    calendarGrid.innerHTML += `<div class="font-bold text-slate-600 p-2">${day}</div>`;
+                });
+
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                // Blank cells for days before the 1st
+                for (let i = 0; i < firstDayOfMonth; i++) {
+                    calendarGrid.innerHTML += '<div></div>';
+                }
+
+                // Day cells
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    let dayEvents = '';
+
+                    monthlyEvents.filter(e => e.date === dateStr).forEach(event => {
+                        const eskul = extracurriculars.find(ex => ex.id === event.eskul_id);
+                        if(eskul) {
+                           dayEvents += `<div class="event text-white ${eskul.color} mb-1 overflow-hidden text-ellipsis whitespace-nowrap" title="${eskul.name}: ${event.title}">${event.title}</div>`;
+                        }
+                    });
+
+                    let todayClass = '';
+                    const today = new Date();
+                    if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()){
+                       todayClass = 'bg-blue-100 text-blue-700 font-bold';
+                    }
+
+                    calendarGrid.innerHTML += `
+                        <div class="calendar-day border border-slate-100 p-1">
+                            <div class="w-8 h-8 flex items-center justify-center rounded-full ${todayClass}">${day}</div>
+                            <div class="mt-1 space-y-1">${dayEvents}</div>
+                        </div>
+                    `;
+                }
+            }
+            
+            prevMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+
+            nextMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+
+
+            // --- EVENT LISTENERS ---
+            
+            // Tab navigation
+            document.getElementById('tabs').addEventListener('click', (e) => {
+                e.preventDefault();
+                if(e.target.classList.contains('tab-item')) {
+                    const targetId = e.target.getAttribute('href');
+                    switchTab(targetId);
+                }
+            });
+
+            // "Daftar Sekarang" buttons on eskul cards
+            eskulListContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('register-btn')) {
+                    const eskulId = e.target.getAttribute('data-eskul-id');
+                    eskulChoiceSelect.value = eskulId;
+                    switchTab('#pendaftaran');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+            
+            // Registration form submission
+            registrationForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real app, you'd send this data to a server
+                console.log('Form submitted!');
+                registrationForm.classList.add('hidden');
+                successMessage.classList.remove('hidden');
+
+                // Optional: reset form after a delay
+                setTimeout(() => {
+                    registrationForm.reset();
+                    registrationForm.classList.remove('hidden');
+                    successMessage.classList.add('hidden');
+                }, 5000);
+            });
+
+
+            // --- INITIALIZATION ---
+            populateEskulList();
+            populateEskulOptions();
+            renderCalendar();
+
+        });
+    </script>
+</body>
+</html>
+
